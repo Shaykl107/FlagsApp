@@ -2,48 +2,40 @@
   let newFlag;
 
   function setupFlags(){
-
-fetch("https://restcountries.com/v3.1/all")
-    .then( (response) => response.json() )
-    .then((data) => {
-
-      for(let i = 0; i < data.length; i++) {
-        let flag = data[i].flags.png
-        let country = data[i].name.common
-
-        flagsAndCountry[flag] = country  
-
+      fetch("https://restcountries.com/v3.1/all")
+         .then( (response) => response.json() )
+         .then((data) => {
+            for(let i = 0; i < data.length; i++) {
+                let flag = data[i].flags.png
+                let country = data[i].name.common
+                flagsAndCountry[flag] = country  
       }
       console.log(flagsAndCountry)
+      getRandomCountry()
     })
-
   }
 
 
+function getRandomCountry(){
+  const keys = Object.keys(flagsAndCountry);
+  newFlag = keys[Math.floor(Math.random() * keys.length)];
+  document.getElementById("flag").src=newFlag
+  console.log(newFlag)
+}
+
 
   function compareUserInput(){
-    let barbados = "https://flagcdn.com/w320/bb.png"
-    let userInput = (document.getElementById("country").value).toLowerCase()
-    let answer = (flagsAndCountry[barbados]).toLowerCase()
-
-    let isCorrect = userInput === answer
-    console.log(userInput,answer, userInput === answer)
+        let userInput = (document.getElementById("country").value).toLowerCase()
+        let answer = (flagsAndCountry[newFlag]).toLowerCase()
+        let isCorrect = userInput === answer
+        console.log(userInput,answer, userInput === answer)
   
     if (isCorrect) {
-      const keys = Object.keys(flagsAndCountry);
-
-     let newFlag = keys[Math.floor(Math.random() * keys.length)];
-      document.getElementById("flag").src=newFlag
+      getRandomCountry()
+      document.getElementById("country").value = ""
 
     }
   }
   
-
-    document.getElementById("flag").src="https://flagcdn.com/w320/bb.png"
-  
-
-  
-
-
-
+    
 setupFlags()
